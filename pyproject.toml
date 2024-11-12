@@ -26,6 +26,7 @@ dependencies = [
   "nomad-parser-plugins-workflow>=1.0",
   "nomad-parser-plugins-database>=1.0",
   "nomad-dtu-nanolab-plugin",
+  "nomad-ikz-plugin",
 ]
 
 [tool.uv.workspace]
@@ -38,6 +39,7 @@ nomad-aitoolkit = { git = "https://github.com/FAIRmat-NFDI/nomad-aitoolkit.git",
 nomad-porous-materials = { git = "https://github.com/FAIRmat-NFDI/nomad-porous-materials.git", rev = "522f4a3208077f534f1c5e886527ee2104283d0b" }
 perovskite-solar-cell-database = { workspace = true }
 nomad-dtu-nanolab-plugin = { workspace = true }
+nomad-ikz-plugin = { workspace = true }
 
 [tool.uv]
 extra-index-url = [
