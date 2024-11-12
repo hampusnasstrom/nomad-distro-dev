@@ -4,3 +4,6 @@
 [submodule "packages/nomad-dtu-nanolab-plugin"]
 	path = packages/nomad-dtu-nanolab-plugin
 	url = git@github.com:DTU-Nanolab-materials-discovery/nomad-dtu-nanolab-plugin.git
+[submodule "packages/nomad-perovskite-solar-cells-database"]
+	path = packages/nomad-perovskite-solar-cells-database
+	url = git@github.com:FAIRmat-NFDI/nomad-perovskite-solar-cells-database.git
