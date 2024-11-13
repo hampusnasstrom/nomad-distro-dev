@@ -10,3 +10,6 @@
 [submodule "packages/nomad-ikz-plugin"]
 	path = packages/nomad-ikz-plugin
 	url = git@github.com:IKZ-Berlin/nomad-ikz-plugin.git
+[submodule "packages/nomad-measurements"]
+	path = packages/nomad-measurements
+	url = git@github.com:FAIRmat-NFDI/nomad-measurements.git
