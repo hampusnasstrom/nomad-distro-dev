@@ -102,3 +102,7 @@ deps = ["gen-nomad-lock-without-dev"]
 cmd = "uv pip compile -U --universal -p 3.11 --extra parsing --extra infrastructure --annotation-style=line pyproject.toml"
 cwd = "packages/nomad-FAIR"
 capture_stdout = "packages/nomad-FAIR/requirements.txt"
+
+[tool.poe.tasks.parse-archive]
+cmd = "python -W ignore -m nomad.cli parse --show-archive"
+capture_stdout = "test.archive.json"
