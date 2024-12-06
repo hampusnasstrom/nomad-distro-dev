@@ -13,3 +13,6 @@
 [submodule "packages/nomad-measurements"]
 	path = packages/nomad-measurements
 	url = git@github.com:FAIRmat-NFDI/nomad-measurements.git
+[submodule "packages/nomad-plugins"]
+	path = packages/nomad-plugins
+	url = git@github.com:hampusnasstrom/nomad-plugins.git
