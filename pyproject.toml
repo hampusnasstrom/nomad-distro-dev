@@ -29,6 +29,7 @@ dependencies = [
   "nomad-ikz-plugin",
   "nomad-measurements",
   "nomad-plugins",
+  "nomad-material-processing",
 ]
 
 [tool.uv.workspace]
@@ -44,6 +45,7 @@ nomad-dtu-nanolab-plugin = { workspace = true }
 nomad-ikz-plugin = { workspace = true }
 nomad-measurements = { workspace = true }
 nomad-plugins = { workspace = true }
+nomad-material-processing = { workspace = true }
 
 [tool.uv]
 extra-index-url = [
