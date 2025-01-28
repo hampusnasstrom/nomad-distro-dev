@@ -19,3 +19,6 @@
 [submodule "packages/nomad-material-processing"]
 	path = packages/nomad-material-processing
 	url = https://github.com/FAIRmat-NFDI/nomad-material-processing.git
+[submodule "packages/nomad-analysis"]
+	path = packages/nomad-analysis
+	url = git@github.com:FAIRmat-NFDI/nomad-analysis.git

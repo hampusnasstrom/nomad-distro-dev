@@ -30,6 +30,7 @@ dependencies = [
   "nomad-measurements",
   "nomad-plugins",
   "nomad-material-processing",
+  "nomad-analysis",
 ]
 
 [tool.uv.workspace]
@@ -46,6 +47,7 @@ nomad-ikz-plugin = { workspace = true }
 nomad-measurements = { workspace = true }
 nomad-plugins = { workspace = true }
 nomad-material-processing = { workspace = true }
+nomad-analysis = { workspace = true }
 
 [tool.uv]
 extra-index-url = [
