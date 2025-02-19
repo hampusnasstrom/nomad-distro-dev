@@ -22,3 +22,6 @@
 [submodule "packages/nomad-analysis"]
 	path = packages/nomad-analysis
 	url = git@github.com:FAIRmat-NFDI/nomad-analysis.git
+[submodule "packages/nomad-neb-workflows"]
+	path = packages/nomad-neb-workflows
+	url = git@github.com:FAIRmat-NFDI/nomad-neb-workflows.git
