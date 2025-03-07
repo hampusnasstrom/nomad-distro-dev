@@ -25,3 +25,6 @@
 [submodule "packages/nomad-neb-workflows"]
 	path = packages/nomad-neb-workflows
 	url = git@github.com:FAIRmat-NFDI/nomad-neb-workflows.git
+[submodule "packages/nomad-battery-database"]
+	path = packages/nomad-battery-database
+	url = git@github.com:u-gajera/Battery-Database.git
