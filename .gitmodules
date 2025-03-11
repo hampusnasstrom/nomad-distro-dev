@@ -28,3 +28,6 @@
 [submodule "packages/nomad-battery-database"]
 	path = packages/nomad-battery-database
 	url = git@github.com:u-gajera/Battery-Database.git
+[submodule "packages/nomad-catalysis-plugin"]
+	path = packages/nomad-catalysis-plugin
+	url = git@github.com:FAIRmat-NFDI/nomad-catalysis-plugin.git
