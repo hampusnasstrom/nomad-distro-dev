@@ -34,6 +34,7 @@ dependencies = [
   "nomad-neb-workflows",
   "nomad-battery-database",
   "nomad-catalysis",
+  "fabrication-facilities",
 ]
 
 [tool.uv.workspace]
@@ -54,6 +55,7 @@ nomad-analysis = { workspace = true }
 nomad-neb-workflows = { workspace = true }
 nomad-battery-database = { workspace = true }
 nomad-catalysis = { workspace = true }
+fabrication-facilities = { workspace = true }
 
 [tool.uv]
 extra-index-url = [
