@@ -1,0 +1,13 @@
+data:
+  m_def: nomad.datamodel.metainfo.basesections.v1.PureSubstance
+  elemental_composition:
+    - m_def: nomad.datamodel.metainfo.basesections.v1.ElementalComposition
+      element: Pb
+      atomic_fraction: 1.0
+    - m_def: nomad.datamodel.metainfo.basesections.v1.ElementalComposition
+      element: I
+      atomic_fraction: 2.0
+  pure_substance:
+    m_def: nomad.datamodel.metainfo.basesections.v1.PureSubstanceSection
+    molecular_formula: PbI2
+    

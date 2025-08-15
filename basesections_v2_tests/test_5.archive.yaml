@@ -1,0 +1,23 @@
+data:
+  m_def: nomad.datamodel.metainfo.basesections.v1.CompositeSystem
+  elemental_composition:
+    - m_def: nomad.datamodel.metainfo.basesections.v1.ElementalComposition
+      element: Cs
+      atomic_fraction: 0.2
+    - m_def: nomad.datamodel.metainfo.basesections.v1.ElementalComposition
+      element: I
+      atomic_fraction: 0.6
+    - m_def: nomad.datamodel.metainfo.basesections.v1.ElementalComposition
+      element: Pb
+      atomic_fraction: 0.2
+    - m_def: nomad.datamodel.metainfo.basesections.v1.ElementalComposition
+      element: Fe
+  components:
+    - m_def: nomad.datamodel.metainfo.basesections.v1.SystemComponent
+      system: ../uploads/vSDIRw95R8WiiX28X7N-iw/archive/KpM7kj4KhDNzxrkPFg8VLupC7c7B#/data
+      mass_fraction: 461.00894
+    - m_def: nomad.datamodel.metainfo.basesections.v1.PureSubstanceComponent
+      mass_fraction: 259.80992
+      pure_substance:
+        m_def: nomad.datamodel.metainfo.basesections.v1.PureSubstanceSection
+        molecular_formula: CsI
