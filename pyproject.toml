@@ -11,7 +11,7 @@ dependencies = [
   'nomad-porous-materials; sys_platform != "win32"',
   "nomad-aitoolkit",
   "nomad-simulations>=0.3.2",
-  "pynxtools[convert]>=0.5.0",
+  # "pynxtools[convert]>=0.5.0",
   "nomad-schema-plugin-run>=1.0.1",
   "nomad-schema-plugin-simulation-workflow>=1.0.1",
   "nomad-normalizer-plugin-bandstructure>=1.0",
@@ -20,7 +20,7 @@ dependencies = [
   "nomad-normalizer-plugin-spectra>=1.0",
   "nomad-normalizer-plugin-system>=1.0",
   "nomad-normalizer-plugin-simulation-workflow>=1.0",
-  "eelsdbconverter",
+  # "eelsdbconverter",
   "nomad-parser-plugins-electronic>=1.0",
   "nomad-parser-plugins-atomistic>=1.0",
   "nomad-parser-plugins-workflow>=1.0",
@@ -34,7 +34,7 @@ dependencies = [
   "nomad-neb-workflows",
   "nomad-battery-database",
   "nomad-catalysis",
-  "fabrication-facilities",
+  # "fabrication-facilities",
 ]
 
 [tool.uv.workspace]

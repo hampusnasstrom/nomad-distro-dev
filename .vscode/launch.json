@@ -45,6 +45,18 @@
       "args": ["-sv", "packages/nomad-FAIR/tests"]
     },
     {
+      "name": "nomad dtu nanolab tests",
+      "type": "python",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/packages/nomad-dtu-nanolab-plugin/",
+      "program": "${workspaceFolder}/.venv/bin/pytest",
+      "justMyCode": false,
+      "env": {
+        "_PYTEST_RAISE": "1"
+      },
+      "args": ["-svx", "tests/schema_packages/test_cleaving.py"]
+    },
+    {
       "name": "nomad parse",
       "type": "python",
       "request": "launch",
