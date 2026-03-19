@@ -6,110 +6,87 @@ This document outlines the architecture for parsing data from various sources in
 
 ```mermaid
 graph TD
-    subgraph sources["Input Sources"]
-        subgraph voice["Voice Recording"]
+    subgraph IS["Input Sources"]
+        subgraph VR["Voice Recording"]
             VR1["Audio Recording"] -->|audio stream| VR2["Speech to Text"] -->|draft transcript| VR3["Human Correction"]
         end
 
-        subgraph pdf["PDF Articles"]
-            P0["Optional: Runnable Tool<br/>Discover + Fetch Papers"];
-            P1["GROBID"];
-            P0 -->|fetched PDFs| P1
+        subgraph PDF["PDF Articles"]
+            PDF1["Optional: Runnable Tool<br/>Discover + Fetch Papers"];
+            PDF2["GROBID"];
+            PDF1 -->|fetched PDFs| PDF2
         end
 
-        A3["Other Text Sources"]
-
-        A("Output");
-        VR3 -->|voice text| A
-        P1 -->|paper text| A
-        A3 -->|other text| A  
-    end
-
-    A -->|source text| EID["Entry Identification"];
-
-    subgraph schema_mgmt["Schema Selection & Fetching"]
-        S{"Schema Selection"};
-        SM["Manual Schema ID"];
-        SL["Schema Picker LLM Tool"];
-        C["NOMAD API<br/>GET /schemas/{definition_id}"];
-        S -->|selection mode: manual| SM;
-        S -->|selection mode: LLM tool| SL;
-        SM -->|definition_id| C;
-        SL -->|definition_id| C;
-    end
-    EID -->|schema selection input| S;
-    EID -->|text context| SL;
-
-    C -->|JSON schema| D["JSON Schema<br/>Definition"]
-    D -->|transform rules| D2["LLM-Optimized<br/>Schema"]
-    
-    EID -->|raw text| E["Outlines LLM<br/>Engine"]
-    D2 -->|optimized schema constraints| E
-    D -->|original schema constraints| E
-    
-    E -->|extracted JSON document| F["JSON Data<br/>Document"]
-    F -->|optimized instance JSON| G["NOMAD-Native<br/>JSON Instance"]
-    D2 -.->|forward transform mapping| M["Transform Mapping<br/>Rules"]
-    G -.->|reverse transform mapping| M
-    G -->|instance to validate| V{"Original Schema<br/>Validation"}
-    D -->|reference schema| V
-    
-    V -->|validated NOMAD instances| H["NOMAD<br/>Metainfo Instance(s)"]
-    
-    H -->|ingest payload| J["NOMAD RDM<br/>Database"]
-
-    subgraph quality["Pipeline Validation Utility"]
-        GTM["Manual Labeled<br/>Ground Truth"]
-        GTS["Synthetic Ground Truth<br/>from Generated Instances"]
-        U["Extraction Validation<br/>Utility Tool"]
-        K["Quality Metrics &<br/>Error Analysis"]
-
-        GTM -->|manual ground truth pairs| U
-        GTS -->|synthetic ground truth pairs| U
-        U -->|evaluation metrics| K
-    end
-
-    EID -->|benchmark input text| U
-    F -->|predicted extracted instances| U
-    H -->|validated instances for synthesis| GTS
-    
-    subgraph processing["Processing Layer with Outlines"]
-        subgraph pair["Reversible Transform Pair (must be supplied together)"]
-            D2
-            G
-            M
+        subgraph HW["Handwritten Notes"]
+            HW1["Image Capture"] -->|image| HW2["Handwriting Recognition"] -->|text| HW3["Human Correction"]
         end
-        E
-        F
+
+        OT["Other Text Sources"]
+
+        ISO("Output");
+        VR3 -->|voice text| ISO
+        PDF2 -->|paper text| ISO
+        HW3 -->|handwritten text| ISO
+        OT -->|other text| ISO  
+    end
+
+
+    FIXED_SCHEMA["Setting: Fixed Schema"];
+    SCHEMA_TRANSFORM["Setting: Schema Optimization"];
+
+
+    ISO -->|source text| EID["Entry Identification"];
+    EID -->|1..N entries text| FEID["For each entry..."];
+    FEID -->|entry text| SSI;
+    SSI -->|entry text| SSSM;
+    
+
+    FEID -->|entry text| SFI;
+    subgraph SS["Schema Selection"]
+        SSI("Input");
+        SSSM{"Selection Mode"};
+        SSM["Manual Schema ID"];
+        FIXED_SCHEMA -.->|definition_id| SSM;
+        SSP["Schema Picker LLM Tool"];
+        SSA["NOMAD API<br/>GET /schemas/{definition_id}"];
+        SSSM -->|mode: manual| SSM;
+        SSSM -->|mode: LLM tool| SSP;
+        SSI -->|entry text| SSP;
+        SSM -->|definition_id| SSA;
+        SSP -->|definition_id| SSA;
+        SSA -->|JSON schema| SSO("Output");
+    end
+
+    SSO -->|schema| SFI;
+    subgraph SF["Schema Filling"]
+        SCHEMA_TRANSFORM -.->|mapping rules| SFOP & IUM;
+        SFI("Input");
+        SFI -->|schema| SFOP["Schema Optimization"];
+        SFOP -->|optimized schema| SFOE["Outlines/Instructor LLM Engine<br/>Constrained Decoding"];
+        SFI -->|entry text| SFOE;
+        SFOE -->|optimized JSON instance| IUM["Instance Un-Optimization"];
+        IUM -->|NOMAD-native JSON instance| SFV["Schema Validation"];
+        SFI -->|schema| SFV;
+        SFV -->|validated instance| SFO("Output");
     end
     
-    subgraph validation["Validation & Storage"]
-        V
-        H
-        J
-    end
+    SFO -->|validated JSON instance| AW["Create `archive.json`"];
+    SSO -->|schema_id| AW;
     
-    style A fill:#e1f5ff
-    style S fill:#fff3e0
-    style SM fill:#fff3e0
-    style SL fill:#fff3e0
-    style C fill:#fff3e0
-    style D2 fill:#fff3e0
-    style M fill:#fff3e0
-    style E fill:#f3e5f5
-    style F fill:#f3e5f5
-    style G fill:#fce4ec
-    style V fill:#fce4ec
-    style H fill:#e8f5e9
-    style J fill:#c8e6c9
-    style U fill:#e3f2fd
-    style K fill:#e3f2fd
+    style ISO fill:#e1f5ff
+    style SSI fill:#e1f5ff
+    style SSO fill:#e1f5ff
+    style SFI fill:#e1f5ff
+    style SFO fill:#e1f5ff
+    style SSM fill:#fff3e0
+    style SSP fill:#fff3e0
+    style SSA fill:#fff3e0
 ```
 
 ## Key Components
 
-### Outlines Integration
-**Outlines** is a library that enables constrained decoding for LLMs, ensuring generated output always validates against specified schemas without manual validation or retry loops. Benefits:
+### Outlines/Instructor Integration
+**Outlines** and **Instructor** are libraries that enable constrained decoding and structured output for LLMs, ensuring generated output always validates against specified schemas without manual validation or retry loops. Benefits:
 - **Guaranteed valid JSON**: Output always matches the target schema structure
 - **Reduced API calls**: No need for validation failures and retries
 - **Flexible schema support**: Works with JSON schemas, Pydantic models, and grammar constraints
@@ -122,23 +99,26 @@ graph TD
 
 ### Data Processing
 1. **Raw Text Data**: Text extracted/transcribed from various sources
-2. **Extraction Runs (1..N)**: A single raw text input can be split into multiple extraction runs, each targeting the same or different schema types
-3. **Outlines LLM Engine**: Uses Outlines library to enforce structured generation with schema constraints, ensuring output always matches the target JSON schema. Outlines handles validation and retry logic automatically through constrained decoding.
-4. **JSON Data Document(s)**: Guaranteed-valid output(s) per run that conform to the selected schema structure
+2. **Entry Identification**: Source text is split into 1..N individual entry texts, each processed independently
+3. **Outlines/Instructor LLM Engine**: Uses Outlines or Instructor to enforce structured generation with schema constraints, ensuring output always matches the optimized schema. Handles validation and retry logic automatically through constrained decoding.
+4. **Instance Un-Optimization**: Reverse transforms the LLM-generated optimized JSON instance back to the NOMAD-native structure, using the same mapping rules applied during schema optimization.
+5. **Schema Validation**: Validates the un-optimized instance against the original schema before producing the final output.
+6. **Archive Creation**: Produces a NOMAD `archive.json` file from the validated instance together with the `schema_id` from schema selection.
 
 ### Schema Management
 - **Schema Selection Options**:
-    1. **Manual selection** by explicitly providing one or more `definition_id` values
-    2. **LLM-based schema picker tool** that infers one or more schema candidates from input text and returns `definition_id` values
+    1. **Manual selection** by explicitly providing one or more `definition_id` values (uses a fixed schema setting)
+    2. **LLM-based schema picker tool** that receives the entry text and infers one or more schema candidates, returning `definition_id` values
 - **NOMAD API Integration**: Fetches JSON schema definitions dynamically from `GET /schemas/{definition_id}`
-- **Optional Schema Optimization**: Applies reversible transformations to simplify schema complexity for better extraction quality (e.g., flattening deep nesting, narrowing enums, adding helper aliases)
-- **Constraint Adaptation**: Converts optimized (or original) schemas to Outlines-compatible constraints
+- **Optional Schema Optimization**: Applies reversible transformations (driven by mapping rules from the Schema Optimization setting) to simplify schema complexity for better extraction quality (e.g., flattening deep nesting, narrowing enums, adding helper aliases). The same mapping rules are also used during instance un-optimization.
+- **Constraint Adaptation**: Converts optimized (or original) schemas to Outlines/Instructor-compatible constraints
 
 ### Validation & Storage
 1. **LLM Output Instance(s)**: Guaranteed-valid JSON against the optimized schema (or original schema when optimization is skipped), produced per run
-2. **Reverse Transformation**: Deterministic mapping of generated instances back to the original NOMAD schema structure
-3. **NOMAD Metainfo Instance(s)**: Reverted JSON loaded as NOMAD metainfo objects after original-schema validation
-4. **RDM Database**: Final storage of one or multiple instances in NOMAD research data management system
+2. **Instance Un-Optimization**: Deterministic reverse mapping of generated instances back to the original NOMAD schema structure, using the mapping rules from the Schema Optimization setting
+3. **Schema Validation**: The un-optimized instance is validated against the original schema to confirm structural correctness
+4. **Archive Creation**: A NOMAD `archive.json` is assembled from the validated instance and the `schema_id` returned by schema selection
+5. **RDM Database**: Final storage of the `archive.json` in the NOMAD research data management system
 
 ### Extraction Validation Utility
 - **Purpose**: Validate extraction quality independently from runtime schema validation
@@ -208,24 +188,12 @@ Result posted to NOMAD:
 }
 ```
 
-### 5) Mapping metadata used by transformer
-```python
-mapping_rules = {
-    "voltage": {
-        "optimized_path": "voltage.value",
-        "unit_path": "voltage.unit",
-        "target_unit": "V",
-        "allowed_units": ["V", "mV", "kV"]
-    }
-}
-```
-
 ## Development Tasks
 
 - [ ] Text extraction/transcription modules for each source type
 - [ ] Manual schema selection input (pass-through `definition_id`)
 - [ ] LLM schema picker tool (text -> `definition_id`)
-- [ ] NOMAD API client for schema retrieval
+- [x] NOMAD API client for schema retrieval
 - [ ] Outlines integration with JSON schema constraints
 - [ ] Reversible schema optimizer (original schema -> optimized schema + mapping rules)
 - [ ] Reverse instance transformer (optimized instance -> NOMAD-native instance)
