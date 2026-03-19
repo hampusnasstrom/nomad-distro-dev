@@ -1,0 +1,100 @@
+{
+  "m_def": "nomad.datamodel.datamodel.EntryArchive",
+  "data": {
+    "m_def": "nomad.datamodel.metainfo.basesections.v2.System",
+    "formula": "Pb0.2I0.6C0.025H0.15N0.025",
+    "sub_systems": [
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.NestedSubSystem",
+        "nested_system": {
+          "m_def": "nomad.datamodel.metainfo.basesections.v2.Element",
+          "element": "Pb"
+        },
+        "subsystem_properties": {
+          "atomic_fraction": 0.2
+        }
+      },
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.NestedSubSystem",
+        "nested_system": {
+          "m_def": "nomad.datamodel.metainfo.basesections.v2.Element",
+          "element": "I"
+        },
+        "subsystem_properties": {
+          "atomic_fraction": 0.6
+        }
+      },
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.NestedSubSystem",
+        "nested_system": {
+          "m_def": "nomad.datamodel.metainfo.basesections.v2.PureSubstance",
+          "name": "Methylammonium",
+          "formula": "CH6N"
+        },
+        "subsystem_properties": {
+          "atomic_fraction": 0.2
+        }
+      }
+    ],
+    "elemental_composition": [
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.ElementalComposition",
+        "element": "Pb",
+        "atomic_fraction": 0.2
+      },
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.ElementalComposition",
+        "element": "I",
+        "atomic_fraction": 0.6
+      },
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.ElementalComposition",
+        "element": "C",
+        "atomic_fraction": 0.025
+      },
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.ElementalComposition",
+        "element": "H",
+        "atomic_fraction": 0.15
+      },
+      {
+        "m_def": "nomad.datamodel.metainfo.basesections.v2.ElementalComposition",
+        "element": "N",
+        "atomic_fraction": 0.025
+      }
+    ]
+  },
+  "results": {
+    "m_def": "nomad.datamodel.results.Results",
+    "material": {
+      "m_def": "nomad.datamodel.results.Material",
+      "elemental_composition": [
+        {
+          "m_def": "nomad.datamodel.results.ElementalComposition",
+          "element": "Pb",
+          "atomic_fraction": 0.2
+        },
+        {
+          "m_def": "nomad.datamodel.results.ElementalComposition",
+          "element": "I",
+          "atomic_fraction": 0.6
+        },
+        {
+          "m_def": "nomad.datamodel.results.ElementalComposition",
+          "element": "C",
+          "atomic_fraction": 0.025
+        },
+        {
+          "m_def": "nomad.datamodel.results.ElementalComposition",
+          "element": "H",
+          "atomic_fraction": 0.15
+        },
+        {
+          "m_def": "nomad.datamodel.results.ElementalComposition",
+          "element": "N",
+          "atomic_fraction": 0.025
+        }
+      ]
+    }
+  }
+}

@@ -43,3 +43,9 @@
 [submodule "packages/nomad-tajine-plugin"]
 	path = packages/nomad-tajine-plugin
 	url = git@github.com:FAIRmat-NFDI/nomad-tajine-plugin.git
+[submodule "packages/nomad-api-plugin-test"]
+	path = packages/nomad-api-plugin-test
+	url = git@github.com:hampusnasstrom/nomad-api-plugin-test.git
+[submodule "packages/sand-app"]
+	path = packages/sand-app
+	url = git@github.com:FAIRmat-NFDI/sand-app.git

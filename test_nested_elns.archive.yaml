@@ -1,0 +1,34 @@
+definitions:
+  sections:
+    InnerEln:
+      base_section: nomad.datamodel.data.ArchiveSection
+      quantities:
+        name:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+      sub_sections:
+        inner_eln:
+          section: InnerEln
+          repeats: True
+    NestedEln:
+      base_section: nomad.datamodel.data.Schema
+      quantities:
+        name:
+          type: str
+          m_annotations:
+            eln:
+              component: StringEditQuantity
+      sub_sections:
+        nested_eln:
+          section: InnerEln
+          repeats: True
+data:
+  m_def: NestedEln
+  nested_eln:
+    - name: 'First Nested ELN Entry'
+      inner_eln:
+        - name: 'First Inner ELN Entry'
+          inner_eln:
+            - name: 'Deeper Inner ELN Entry'

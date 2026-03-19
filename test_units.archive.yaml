@@ -1,0 +1,16 @@
+definitions:
+  name: TestSectionSchemaPackage
+  sections:
+    TestSection:
+      base_sections: 
+        - nomad.datamodel.data.EntryData
+      quantities:
+        test_value:
+          type: float
+          unit: meter
+          m_annotations:
+            eln:
+              component: NumberEditQuantity
+data:
+  m_def: TestSection
+  test_value: 3.14
